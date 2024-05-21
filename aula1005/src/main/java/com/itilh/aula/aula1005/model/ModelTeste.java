@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "nome")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class ModelTeste {
+
     private BigInteger id;
     private String nome;
 }

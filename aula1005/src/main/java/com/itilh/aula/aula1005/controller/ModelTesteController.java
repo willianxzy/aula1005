@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.itilh.aula.aula1005.model.ModelTeste;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,17 +23,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 public class ModelTesteController {
 
-    private static final List<ModelTeste> itens = new ArrayList<ModelTeste>();
+    private static final HashSet<ModelTeste> itens = new HashSet<ModelTeste>();
 
 
-    @GetMapping("/teste/{posicao}")
-    public ModelTeste getPosicao(@PathVariable int posicao) {
-
-        return itens.get(posicao);        
+    @GetMapping("/teste/{id}")
+    public ModelTeste getPosicao(@PathVariable BigInteger id) {
+        ModelTeste alvo = new ModelTeste();
+        alvo.setId(id);
+        for (ModelTeste item : itens) {
+            if (item.equals(alvo))
+            return item;
+        }
+        return alvo;
     }
 
     @GetMapping("/testes")
-    public List<ModelTeste> itens() {
+    public HashSet<ModelTeste> itens() {
         return itens;
     }
     
@@ -48,18 +55,25 @@ public class ModelTesteController {
 
     // atualizar dados do Modelo no servidor // update do CRUD
     @PutMapping("/teste/{id}")
-    public String putMethodName(@PathVariable String id, @RequestBody String entity) {
-        
-        return entity;
+    public ModelTeste putMethodName(@PathVariable BigInteger id, @RequestBody ModelTeste novo) {
+        ModelTeste alvo = new ModelTeste();
+        alvo.setId(id);
+        for (ModelTeste item : itens) {
+            if (item.equals(alvo)){
+            item.setNome(novo.getNome());
+            return item;
+        }
+        }
+        return alvo;
     }
     
     // apagar dados do Modelo no servidor // delete do CRUD
-    @DeleteMapping("/teste/{posicao}")
-    public String deletMethodName(@PathVariable int posicao) {
-        itens.remove(posicao);
+    @DeleteMapping("/teste/{id}")
+    public String deletMethodName(@PathVariable BigInteger id) {
+        ModelTeste alvo = new ModelTeste();
+        alvo.setId(id);
+        
+        itens.remove(alvo);
         return "Excluído.";
     }
-    
- 
-
 }
